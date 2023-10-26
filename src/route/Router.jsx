@@ -9,6 +9,7 @@ import Login from "../pages/LoginSignup/Login";
 import Register from "../pages/LoginSignup/Register";
 import Users from "../pages/Users/Users";
 import Profile from "../pages/Profile/Profile";
+import Users2 from "../pages/Users/Users2";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
                 path: '/users',
                 element: <Users />,
                 loader: () => fetch('https://espresso-emporium-auth-server-rootnure.vercel.app/user'),
+            },
+            {
+                path: '/users2',
+                element: <Users2 />,
             },
             {
                 path: '/profile',

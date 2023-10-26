@@ -30,6 +30,9 @@ const NavBar = () => {
             <NavLink to="/users" title="All Users" className="ee-nav-btn">
                 <IoIosPeople></IoIosPeople>
             </NavLink>
+            <NavLink to="/users2" title="All Users" className="ee-nav-btn flex items-center">
+                <IoIosPeople></IoIosPeople>*
+            </NavLink>
             <NavLink to="/profile" title="My Profile" className="ee-nav-btn">
                 <IoMdPerson></IoMdPerson>
             </NavLink>
