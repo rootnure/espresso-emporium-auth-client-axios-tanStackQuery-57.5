@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
+import axios from "axios";
 
 
 const Register = () => {
@@ -26,7 +27,20 @@ const Register = () => {
                 // new user has been created
                 const createAt = result.user.metadata.creationTime;
                 const user = { name, email, createAt, encryptedPassword: btoa(password) };
-                fetch('https://espresso-emporium-auth-server-rootnure.vercel.app//user', {
+
+                /* // using axios */
+                axios.post('https://espresso-emporium-auth-server-rootnure.vercel.app/user', user)
+                    .then(data => {
+                        console.log(data.data);
+                        if (data.data.insertedId) {
+                            logOut();
+                            toast.info('Account created successfully. Please Login!')
+                            navigate('/login');
+                        }
+                    })
+
+                /* // using fetch
+                fetch('https://espresso-emporium-auth-server-rootnure.vercel.app/user', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -41,6 +55,7 @@ const Register = () => {
                             navigate('/login');
                         }
                     })
+                     */
             })
             .catch(err => {
                 console.error(err)
