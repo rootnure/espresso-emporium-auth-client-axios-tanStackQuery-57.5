@@ -3,6 +3,7 @@ import { MdArrowBack } from "react-icons/md";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
 import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from 'axios';
 
 
 const UpdateExisting = () => {
@@ -37,7 +38,22 @@ const UpdateExisting = () => {
         const updatedCoffee = { name, quantity, chef, supplier, category, details, photo, price }
         console.log(updatedCoffee);
 
-        fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app//coffee/${_id}`, {
+        /* // using axios */
+        axios.put(`https://espresso-emporium-auth-server-rootnure.vercel.app/coffee/${_id}`, updatedCoffee)
+            .then(data => {
+                console.log(data.data);
+                if (data.data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Coffee updated successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                }
+            })
+
+        /* // using fetch
+        fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app/coffee/${_id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -56,6 +72,7 @@ const UpdateExisting = () => {
                     })
                 }
             })
+             */
     }
 
 
