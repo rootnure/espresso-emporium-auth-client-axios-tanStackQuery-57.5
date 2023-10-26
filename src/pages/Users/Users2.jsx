@@ -1,5 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
@@ -7,12 +8,20 @@ import Swal from "sweetalert2";
 
 const Users2 = () => {
 
-    const [users, setUsers] = useState([]);
+    const { isPending, isError, data: users } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await fetch('https://espresso-emporium-auth-server-rootnure.vercel.app/user');
+            return res.json();
+        }
+    })
 
-    useEffect(() => {
-        axios.get('https://espresso-emporium-auth-server-rootnure.vercel.app/user')
-            .then(data => setUsers(data.data))
-    }, []);
+    // const [users, setUsers] = useState([]);
+
+    // useEffect(() => {
+    //     axios.get('https://espresso-emporium-auth-server-rootnure.vercel.app/user')
+    //         .then(data => setUsers(data.data))
+    // }, []);
 
 
     const handleDeleteUser = _id => {
@@ -27,12 +36,12 @@ const Users2 = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`https://espresso-emporium-auth-server-rootnure.vercel.app/user/${_id}`,)
+                axios.delete(`https://espresso--emporium-auth-server-rootnure.vercel.app/user/${_id}`,)
                     .then(data => {
                         if (data.data.deletedCount > 0) {
                             // remove the user from the UI
-                            const remaining = users.filter(user => user._id !== _id);
-                            setUsers(remaining);
+                            // const remaining = users.filter(user => user._id !== _id);
+                            // setUsers(remaining);
                             // successful delete confirmation
                             Swal.fire(
                                 'Deleted!',
@@ -43,6 +52,33 @@ const Users2 = () => {
                     })
             }
         })
+    }
+
+    if (isPending) {
+        return (
+            <>
+                <main className="my-24">
+                    <div className="h-24 flex justify-center items-center text-blue-400">
+                        <span className="loading loading-bars loading-lg"></span>
+                    </div>
+                </main>
+            </>
+        )
+    }
+
+    if (isError) {
+        return (
+            <>
+                <main className="my-24">
+                    <div className="h-24 flex justify-center items-center">
+                        <div className="alert alert-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Error! Task failed successfully.</span>
+                        </div>
+                    </div>
+                </main>
+            </>
+        )
     }
 
     return (
