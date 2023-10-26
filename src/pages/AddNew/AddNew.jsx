@@ -3,6 +3,7 @@ import { MdArrowBack } from "react-icons/md";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
+import axios from "axios";
 
 
 const AddNew = () => {
@@ -33,7 +34,22 @@ const AddNew = () => {
         const newCoffee = { name, quantity, chef, supplier, category, details, photo, price }
         console.log(newCoffee);
 
-        fetch('https://espresso-emporium-auth-server-rootnure.vercel.app//coffee', {
+        /* //using axios */
+        axios.post('https://espresso-emporium-auth-server-rootnure.vercel.app/coffee', newCoffee)
+            .then(data => {
+                console.log(data.data);
+                if (data.data.insertedId) {
+                    Swal.fire({
+                        title: 'Congratulations!',
+                        text: 'Coffee added successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Cool'
+                    })
+                }
+            })
+
+        /* // using fetch
+        fetch('https://espresso-emporium-auth-server-rootnure.vercel.app/coffee', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -52,6 +68,7 @@ const AddNew = () => {
                     })
                 }
             })
+            */
     }
 
 

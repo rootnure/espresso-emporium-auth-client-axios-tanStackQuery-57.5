@@ -3,6 +3,7 @@ import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
 
 
 const Users = () => {
@@ -24,7 +25,26 @@ const Users = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app//user/${_id}`, {
+                axios.delete(`https://espresso-emporium-auth-server-rootnure.vercel.app/user/${_id}`,)
+                    .then(data => {
+                        if (data.data.deletedCount > 0) {
+                            // remove the user from the UI
+                            const remaining = users.filter(user => user._id !== _id);
+                            setUsers(remaining);
+                            // successful delete confirmation
+                            Swal.fire(
+                                'Deleted!',
+                                'User has been deleted.',
+                                'success'
+                            )
+                                .then(
+                                    navigate('#')
+                                )
+                        }
+                    })
+
+                /* // using fetch
+                fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app/user/${_id}`, {
                     method: 'DELETE'
                 })
                     .then(res => res.json())
@@ -44,6 +64,7 @@ const Users = () => {
                                 )
                         }
                     })
+                     */
             }
         })
     }
