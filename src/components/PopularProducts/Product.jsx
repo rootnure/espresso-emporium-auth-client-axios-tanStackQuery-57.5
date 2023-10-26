@@ -4,6 +4,7 @@ import { AiFillEye, AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../providers/AuthProvider';
+import axios from 'axios';
 
 
 const Product = ({ product, handleUpdateUIAfterDelete }) => {
@@ -23,7 +24,22 @@ const Product = ({ product, handleUpdateUIAfterDelete }) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app//coffee/${_id}`, {
+                // using axios
+                axios.delete(`https://espresso-emporium-auth-server-rootnure.vercel.app/coffee/${_id}`)
+                    .then(data => {
+                        console.log(data.data);
+                        if (data.data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Coffee has been deleted.',
+                                'success'
+                            )
+                            handleUpdateUIAfterDelete(_id);
+                        }
+                    })
+
+                /* // using fetch
+                fetch(`https://espresso-emporium-auth-server-rootnure.vercel.app/coffee/${_id}`, {
                     method: 'DELETE'
                 })
                     .then(res => res.json())
@@ -38,6 +54,7 @@ const Product = ({ product, handleUpdateUIAfterDelete }) => {
                             handleUpdateUIAfterDelete(_id);
                         }
                     })
+                     */
             }
         })
     }
