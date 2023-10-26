@@ -1,0 +1,14 @@
+.active {
+    color: #332121 !important;
+    background-color: white !important;
+    border: 1px solid white
+}
+
+.active:hover {
+    color: white !important;
+    background-color: transparent !important;
+}
+
+.ee-nav-btn {
+    @apply font-rancho text-white bg-transparent duration-200 rounded-full px-2 py-1 hover:bg-white hover:text-[#332121] text-base lg:text-xl;
+}

@@ -1,0 +1,6 @@
+/* google font Raleway (Base, Medium, Semibold, Bold) and Rancho (Base) */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&family=Rancho&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
