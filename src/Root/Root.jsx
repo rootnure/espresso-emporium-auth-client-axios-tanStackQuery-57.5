@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
+import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,6 +12,7 @@ const Root = () => {
             <NavBar />
             <Outlet />
             <Footer />
+            <ScrollToTop />
             <ToastContainer
                 position="top-right"
                 autoClose={2500}
