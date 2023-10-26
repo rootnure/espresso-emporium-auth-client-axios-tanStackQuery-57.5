@@ -4,6 +4,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import SectionHeader from "../../components/SectionHeader/SectionHeader";
+import axios from "axios";
 
 
 const Login = () => {
@@ -22,13 +23,24 @@ const Login = () => {
 
         signInUser(email, password)
             .then(result => {
-                // console.log(result.user.metadata);
                 const user = {
                     email,
                     lastLoggedAt: result.user?.metadata?.lastSignInTime,
                 }
                 // update lst logged at in the database
-                fetch('https://espresso-emporium-auth-server-rootnure.vercel.app//user', {
+
+                /* // using axios */
+                axios.patch('https://espresso-emporium-auth-server-rootnure.vercel.app/user', user)
+                    .then(data => {
+                        console.log(data.data);
+                        if (data.data.modifiedCount > 0) {
+                            toast.success('Successfully logged in');
+                            navigate('/');
+                        }
+                    })
+
+                /* // using fetch
+                fetch('https://espresso-emporium-auth-server-rootnure.vercel.app/user', {
                     method: 'PATCH',
                     headers: {
                         'content-type': 'application/json',
@@ -37,12 +49,12 @@ const Login = () => {
                 })
                     .then(res => res.json())
                     .then(data => {
-                        // console.log(data);
                         if (data.modifiedCount > 0) {
                             toast.success('Successfully logged in');
                             navigate('/');
                         }
                     })
+                    */
             })
             .catch(err => {
                 console.error(err);
